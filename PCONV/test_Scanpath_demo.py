@@ -79,7 +79,7 @@ def main(config):
     device_id = 0
     device = f'cuda:{device_id}'
 
-    model = RN18.ResNet18("https://download.pytorch.org/models/resnet18-f37072fd.pth")
+    model = RN18.ResNet18("ckpts/model.pth")
 
     model = model.to(device)
 

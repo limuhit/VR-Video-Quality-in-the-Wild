@@ -88,10 +88,10 @@ def main(config):
 
     if config.model_name == 'RN18': # ERP-VQA
         print('The current model is ' + config.model_name)
-        model = RN18.ResNet18("https://download.pytorch.org/models/resnet18-f37072fd.pth")
+        model = RN18.ResNet18("ckpts/model.pth")
     elif config.model_name == 'PCONV_RN18': # Proposed
         print('The current model is ' + config.model_name)
-        model = PCONV_lightRN.ResNet18("https://download.pytorch.org/models/resnet18-f37072fd.pth")
+        model = PCONV_lightRN.ResNet18("ckpts/model.pth")
 
     model = model.to(device)
 
