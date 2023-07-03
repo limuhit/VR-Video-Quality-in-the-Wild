@@ -75,5 +75,5 @@ CUDA_VISIBLE_DEVICES=0 python -u train_Scanpath_VR_all.py \
 # 7. Acknowledgement
 
  https://github.com/sunwei925/MC360IQA
- 
+
  https://github.com/limuhit/pseudocylindrical_convolution
