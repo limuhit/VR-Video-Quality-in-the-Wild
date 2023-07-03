@@ -18,11 +18,14 @@ def tensor2img(x):
     return tx
 
 
-def extract_frame(videos_dir, video_name, lon, lat, save_folder):
+def extract_frame(videos_dir, video_name, lon, lat, save_folder, info):
     vp = Rotate().to('cuda:0')
     try:
         filename = os.path.join(videos_dir, video_name)
-        video_name_str = str(video_name)
+        if info == 'data/infoA.csv':
+            video_name_str = 'A_' + str(video_name)
+        elif info == 'data/infoB.csv':
+            video_name_str = 'B_' + str(video_name)
         video_capture = cv2.VideoCapture()
         video_capture.open(filename)
         cap = cv2.VideoCapture(filename)
@@ -111,4 +114,4 @@ for i in range(n_video):
     lon = HM_yaws[i]
     print('lat:', lat, 'lon', lon)
     print('start extract {}th video: {}'.format(i, video_name))
-    extract_frame(videos_dir, video_name, lon*(-1), lat, save_folder)
+    extract_frame(videos_dir, video_name, lon*(-1), lat, save_folder, info=info_path)

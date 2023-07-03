@@ -19,10 +19,13 @@ def mc2img(x):
     return tx
 
 
-def extract_frame(videos_dir, video_name, subject, lon, lat, save_folder):
+def extract_frame(videos_dir, video_name, subject, lon, lat, save_folder, info):
     try:
         filename = os.path.join(videos_dir, video_name)
-        video_name_str = str(video_name)
+        if info == 'data/scanpathA.csv':
+            video_name_str = 'A_' + str(video_name)
+        elif info == 'data/scanpathB.csv':
+            video_name_str = 'B_' + str(video_name)
         video_capture = cv2.VideoCapture()
         video_capture.open(filename)
         cap = cv2.VideoCapture(filename)
@@ -32,6 +35,8 @@ def extract_frame(videos_dir, video_name, subject, lon, lat, save_folder):
         print(filename)
         print(video_length)
         print(video_frame_rate)
+
+        exit_folder(os.path.join(save_folder, video_name_str))
 
         video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # the heigh of frames
         video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))  # the width of frames
@@ -59,8 +64,8 @@ def extract_frame(videos_dir, video_name, subject, lon, lat, save_folder):
 
                     imgviewport = mc2img(imgviewport)
 
-                    exit_folder(os.path.join(save_folder, video_name_str1, str('sub')+str(subject)))
-                    cv2.imwrite(os.path.join(save_folder, video_name_str1, str('sub')+str(subject),
+                    exit_folder(os.path.join(save_folder, video_name_str, str('sub')+str(subject)))
+                    cv2.imwrite(os.path.join(save_folder, video_name_str, str('sub')+str(subject),
                                              '{:03d}'.format(video_read_index) + '.png'), imgviewport)
 
                     video_read_index += 1
@@ -68,7 +73,7 @@ def extract_frame(videos_dir, video_name, subject, lon, lat, save_folder):
 
         if video_read_index < video_length_min:
             for i in range(video_read_index, video_length_min):
-                cv2.imwrite(os.path.join(save_folder, video_name_str1, str('sub')+str(subject),
+                cv2.imwrite(os.path.join(save_folder, video_name_str, str('sub')+str(subject),
                                          '{:03d}'.format(i) + '.png'), imgviewport)
 
         print('video_read_index:', video_read_index)
@@ -85,7 +90,7 @@ def exit_folder(folder_name):
 
 videos_dir = './VRVideo_Dataset/Video'
 info_path = 'data/scanpathB.csv'
-save_folder = './ERP_frame/viewport_224_fp1_spB'
+save_folder = './ERP_frame/viewport_224_fp1_spAB'
 
 dataInfo = pd.read_csv(info_path)
 
@@ -100,4 +105,4 @@ for i in range(n_video):
         tmp = dataInfo[(dataInfo["VideoName"] == video_name)&(dataInfo["subject"] == sub)]
         lat = tmp["HM_pitch"].tolist()
         lon = tmp["HM_yaw"].tolist()
-        extract_frame(videos_dir, video_name, sub, lon, lat, save_folder)
+        extract_frame(videos_dir, video_name, sub, lon, lat, save_folder, info=info_path)
