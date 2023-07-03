@@ -33,7 +33,7 @@ CUDA_VISIBLE_DEVICES=0 python -u train_VR_all.py \
  --decay_ratio 0.9 \
  --decay_interval 2 \
  --loss_type plcc \
-&lt;&lt; logs/PCONV_RN18_epochs30_bs8_lr000005_plcc.log
+&gt;&gt; logs/PCONV_RN18_epochs30_bs8_lr000005_plcc.log
 
 
 5. Train and test ERP-VQA with
