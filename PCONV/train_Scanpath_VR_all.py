@@ -100,12 +100,8 @@ def main(config):
 
         best_val_criterion = -1  # SROCC min
         best_val = []
-        # best_test = []
 
         print('Starting training:')
-
-        old_save_name = None
-        # csvfile_path = None
 
         for epoch in range(config.epochs):
             model.train()
@@ -123,7 +119,7 @@ def main(config):
 
                 optimizer.zero_grad()
 
-                loss = criterion(labels_mean, outputs_mean)
+                loss = criterion(outputs_mean, labels_mean)
                 batch_losses.append(loss.item())
                 batch_losses_each_disp.append(loss.item())
                 loss.backward()
@@ -167,7 +163,6 @@ def main(config):
                 y_output_mean = df.groupby('video_name_list').mean()['y_output'].tolist()
                 val_PLCC, val_SRCC, val_KRCC, val_RMSE = performance_fit(label_mean, y_output_mean)
 
-                # val_PLCC, val_SRCC, val_KRCC, val_RMSE = performance_fit(np.array(label), np.array(y_output))
 
                 print(
                     'Epoch {} completed. The result on the validation databaset: SRCC: {:.4f}, KRCC: {:.4f}, PLCC: {:.4f}, and RMSE: {:.4f}'.format(
@@ -309,23 +304,6 @@ def main(config):
                     best_test_7AB = [test_SRCC_7AB, test_KRCC_7AB, test_PLCC_7AB, test_RMSE_7AB]
                     best_test_15AB = [test_SRCC_15AB, test_KRCC_15AB, test_PLCC_15AB, test_RMSE_15AB]
                     best_test_all = [test_SRCC_all, test_KRCC_all, test_PLCC_all, test_RMSE_all]
-
-                    # print('Saving model...')
-                    # if not os.path.exists(config.ckpt_path):
-                    #     os.makedirs(config.ckpt_path)
-                    #
-                    # if epoch > 0:
-                    #     if os.path.exists(old_save_name):
-                    #         os.remove(old_save_name)
-                    #     # if os.path.exists(csvfile_path):
-                    #     #     os.remove(csvfile_path)
-                    #
-                    # save_model_name = os.path.join(config.ckpt_path, config.model_name + '_' + \
-                    #                                config.database + '_' + config.loss_type + '_NR_v' + str(
-                    #     config.exp_version) \
-                    #                                + '_epoch_%d_SRCC_%f.pth' % (epoch + 1, test_SRCC))
-                    # torch.save(model.state_dict(), save_model_name)
-                    # old_save_name = save_model_name
 
 
         print('Training completed.')
