@@ -1,5 +1,7 @@
 # "VR Video Quality in the Wild" 
 
+![alt sample](videoSample.jpg)
+
 ## 1. Preparation
 
  python setup.py install
